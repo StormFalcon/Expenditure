@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by Flyer on 17/12/14.
@@ -63,11 +64,13 @@ public class CustomTextWatcher implements TextWatcher {
         {
             editText.removeTextChangedListener(this);
         }
-        String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
+        Locale english = new Locale("en", "US");
+        String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance(english).getCurrency().getSymbol());
         String cleanString = s.toString().replaceAll(replaceable, "");
 
         double parsed = Double.parseDouble(cleanString);
-        String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+
+        String formatted = NumberFormat.getCurrencyInstance(english).format((parsed/100));
         temp = formatted;
         editText.setText(formatted);
         editText.setSelection(formatted.length());
