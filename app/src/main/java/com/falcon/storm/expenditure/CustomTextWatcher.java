@@ -59,20 +59,15 @@ public class CustomTextWatcher implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
 
-        ////////////////////////////////////////////////////////////////////
-        // NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
-        // NOTE: This works, but will have error with large number
-        ////////////////////////////////////////////////////////////////////
         if(!s.toString().equals(temp))
         {
             editText.removeTextChangedListener(this);
         }
-
-        String cleanString = s.toString().replaceAll("[$,.]","");
+        String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
+        String cleanString = s.toString().replaceAll(replaceable, "");
 
         double parsed = Double.parseDouble(cleanString);
         String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-
         temp = formatted;
         editText.setText(formatted);
         editText.setSelection(formatted.length());
